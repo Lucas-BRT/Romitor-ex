@@ -38,7 +38,11 @@ const PlayersList = () => {
 
   useEffect(() => {
     const fetchPlayers = async () => {
-      const playersData = await getPlayers();
+      let playersData = await getPlayers();
+      OBR.party.onChange(async () => {
+        playersData = await getPlayers();
+        setPlayers(playersData);
+      });
       setPlayers(playersData);
     };
 
@@ -46,11 +50,11 @@ const PlayersList = () => {
   }, []);
 
   return (
-    <ul className="players_list">
+    <div className="players_list">
       {players.map((player) => (
         <PlayerContainer name={player.name} role={player.role} />
       ))}
-    </ul>
+    </div>
   );
 };
 

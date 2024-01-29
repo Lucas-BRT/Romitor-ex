@@ -1,9 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import Home from "./home.jsx";
+import OBR from "@owlbear-rodeo/sdk";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <Home />
-  </React.StrictMode>,
-);
+OBR.onReady(() => {
+  ReactDOM.createRoot(document.getElementById("root")).render(
+    <React.StrictMode>
+      <Home />
+    </React.StrictMode>,
+  );
+});
