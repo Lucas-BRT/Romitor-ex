@@ -18,6 +18,7 @@ header {
   padding: 5px;
   display: flex;
   justify-content: center;
+  align-items: center;
   font-size: 1.7em;
 }
 
@@ -47,18 +48,21 @@ header {
   width: 60%;
   display: flex;
   justify-content: center;
-}
-
-.player-role {
-  width: 40%;
-  display: flex;
-  justify-content: center;
+  align-items: center;
 }
 
 .master-role {
   color: rgb(255, 242, 61);
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .player-role {
   color: rgb(51, 255, 51);
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

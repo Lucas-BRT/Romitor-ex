@@ -1,4 +1,60 @@
-export const PlayerContainer = (props) => {
+import { useState, useEffect } from "react";
+import OBR from "@owlbear-rodeo/sdk";
+
+const getPlayers = async () => {
+  let players = [];
+
+  const selfPlayer = {
+    name: await OBR.player.getName(),
+    role: await OBR.player.getRole(),
+  };
+
+  const otherPlayers = (await OBR.party.getPlayers()).map((player) => {
+    const playerData = {
+      name: player.name,
+      role: player.role,
+    };
+    return playerData;
+  });
+
+  players.push(selfPlayer, ...otherPlayers);
+
+  players.map((player) => {
+    switch (player.role) {
+      case "GM":
+        player.role = "Master";
+        break;
+      case "PLAYER":
+        player.role = "Player";
+        break;
+    }
+  });
+
+  return players;
+};
+
+const PlayersList = () => {
+  const [players, setPlayers] = useState([]);
+
+  useEffect(() => {
+    const fetchPlayers = async () => {
+      const playersData = await getPlayers();
+      setPlayers(playersData);
+    };
+
+    fetchPlayers();
+  }, []);
+
+  return (
+    <ul className="players_list">
+      {players.map((player) => (
+        <PlayerContainer name={player.name} role={player.role} />
+      ))}
+    </ul>
+  );
+};
+
+const PlayerContainer = (props) => {
   const { name, role } = props;
   let class_role;
 
@@ -24,11 +80,7 @@ function Home() {
     <div>
       <header>Romitor-ex</header>
       <div className="main-container">
-        <ul className="players_list">
-          <PlayerContainer name="Nimb" role="Master" />
-          <PlayerContainer name="Jhon Carter" role="Player" />
-          <PlayerContainer name="Eric Withliz" role="Player" />
-        </ul>
+        <PlayersList />
       </div>
     </div>
   );
