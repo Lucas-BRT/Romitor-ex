@@ -7,12 +7,14 @@ const getPlayers = async () => {
   const selfPlayer = {
     name: await OBR.player.getName(),
     role: await OBR.player.getRole(),
+    id: await OBR.player.getId(),
   };
 
   const otherPlayers = (await OBR.party.getPlayers()).map((player) => {
     const playerData = {
       name: player.name,
       role: player.role,
+      id: player.id,
     };
     return playerData;
   });
@@ -51,15 +53,23 @@ const PlayersList = () => {
 
   return (
     <div className="players_list">
-      {players.map((player) => (
-        <PlayerContainer name={player.name} role={player.role} />
-      ))}
+      {players.map(
+        (player) => (
+          <PlayerContainer
+            name={player.name}
+            role={player.role}
+            key={player.id}
+            id={player.id}
+          />
+        ),
+        // console.log(player.name, player.role, player.id),
+      )}
     </div>
   );
 };
 
 const PlayerContainer = (props) => {
-  const { name, role } = props;
+  const { name, role, id } = props;
   let class_role;
 
   switch (role) {
@@ -72,7 +82,7 @@ const PlayerContainer = (props) => {
   }
 
   return (
-    <div className="player-container">
+    <div id={id} className="player-container">
       <div className="player-name">{name}</div>
       <div className={`${class_role}`}>{role}</div>
     </div>
