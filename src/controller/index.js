@@ -1,7 +1,6 @@
 import { getSelfData } from "../model";
 import { getPlayersData } from "../model";
 import OBR from "@owlbear-rodeo/sdk";
-import { renameRoles } from "../model";
 
 export const getAllPlayersData = async () => {
   let players = [];
@@ -28,6 +27,21 @@ export const onTeamSizeChange = async (action = () => {}) => {
       onlinePlayers = newOnlinePlayers;
       onlinePlayersSize = newOnlinePlayersSize;
       action(onlinePlayers);
+    }
+  });
+};
+
+const renameRoles = (players) => {
+  players.map((player) => {
+    switch (player.role) {
+      case "GM":
+        player.role = "Master";
+        break;
+      case "PLAYER":
+        player.role = "Player";
+        break;
+      default:
+        break;
     }
   });
 };
