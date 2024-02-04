@@ -52,11 +52,11 @@ const renameRoles = (players) => {
   });
 };
 
-export const notify = async (mensage, playerState) => {
+export const notify = async (mensage, changeState) => {
   let notificationId;
 
-  switch (playerState) {
-    case "ENTERTED":
+  switch (changeState) {
+    case "ENTERED":
       notificationId = await OBR.notification.show(mensage, "SUCCESS");
       break;
     case "EXITED":
@@ -64,7 +64,7 @@ export const notify = async (mensage, playerState) => {
       break;
   }
 
-  setTimeout(() => {
-    OBR.notification.close(notificationId);
+  setTimeout(async () => {
+    await OBR.notification.close(notificationId);
   }, NOTIFICATION_DELAY);
 };
