@@ -20,18 +20,3 @@ export const getPlayersData = async () => {
   });
   return playersData;
 };
-
-export const renameRoles = (players) => {
-  players.map((player) => {
-    switch (player.role) {
-      case "GM":
-        player.role = "Master";
-        break;
-      case "PLAYER":
-        player.role = "Player";
-        break;
-      default:
-        break;
-    }
-  });
-};

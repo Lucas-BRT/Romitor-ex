@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getAllPlayersData, onTeamSizeChange } from "../../controller";
+import { getAllPlayersData, notify, onTeamSizeChange } from "../../controller";
 
 export const PlayersList = () => {
   let [players, setPlayers] = useState([]);
@@ -7,8 +7,16 @@ export const PlayersList = () => {
   useEffect(() => {
     const handlePlayersChanges = async () => {
       setPlayers(await getAllPlayersData());
-      onTeamSizeChange((onlinePlayers) => {
+      onTeamSizeChange(async (onlinePlayers, ChangeStatus) => {
         setPlayers(onlinePlayers);
+        switch (ChangeStatus) {
+          case "ENTERED":
+            await notify("A player has entered the room!", ChangeStatus);
+            break;
+          case "EXITED":
+            await notify("A player has exited the room!", ChangeStatus);
+            break;
+        }
       });
     };
 
