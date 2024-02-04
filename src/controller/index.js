@@ -2,6 +2,8 @@ import { getSelfData } from "../model";
 import { getPlayersData } from "../model";
 import OBR from "@owlbear-rodeo/sdk";
 
+const NOTIFICATION_DELAY = 500;
+
 export const getAllPlayersData = async () => {
   let players = [];
 
@@ -44,4 +46,21 @@ const renameRoles = (players) => {
         break;
     }
   });
+};
+
+export const notify = async (mensage, playerState) => {
+  let notificationId;
+
+  switch (playerState) {
+    case "ENTERTED":
+      notificationId = await OBR.notification.show(mensage, "SUCCESS");
+      break;
+    case "EXITED":
+      notificationId = await OBR.notification.show(mensage, "ERROR");
+      break;
+  }
+
+  setTimeout(() => {
+    OBR.notification.close(notificationId);
+  }, NOTIFICATION_DELAY);
 };
