@@ -7,7 +7,7 @@ export const PlayersList = () => {
   useEffect(() => {
     const handlePlayersChanges = async () => {
       setPlayers(await getAllPlayersData());
-      onTeamSizeChange((onlinePlayers) => {
+      onTeamSizeChange((onlinePlayers, ChangeStatus) => {
         setPlayers(onlinePlayers);
       });
     };

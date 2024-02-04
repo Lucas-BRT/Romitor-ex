@@ -20,15 +20,19 @@ export const getAllPlayersData = async () => {
 export const onTeamSizeChange = async (action = () => {}) => {
   let onlinePlayers = await getAllPlayersData();
   let onlinePlayersSize = onlinePlayers.length;
+  let changeStatus;
 
   OBR.party.onChange(async () => {
     const newOnlinePlayers = await getAllPlayersData();
     const newOnlinePlayersSize = newOnlinePlayers.length;
 
     if (onlinePlayersSize !== newOnlinePlayersSize) {
+      changeStatus =
+        onlinePlayersSize < newOnlinePlayersSize ? "ENTERED" : "EXITED";
+
       onlinePlayers = newOnlinePlayers;
       onlinePlayersSize = newOnlinePlayersSize;
-      action(onlinePlayers);
+      action(onlinePlayers, changeStatus);
     }
   });
 };
