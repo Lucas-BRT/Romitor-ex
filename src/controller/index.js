@@ -89,3 +89,17 @@ export const setMetadataToDefault = async () => {
   };
   await OBR.room.setMetadata({ [METADATA_PATH]: defaultMetadata });
 };
+
+export const createMetadataIfNotExists = async () => {
+  let metadata = await getMetadata();
+
+  if (metadata === undefined) {
+    metadata = DEFAULT_METADATA;
+    await OBR.room.setMetadata({ [METADATA_PATH]: metadata });
+    console.log(metadata);
+  }
+};
+
+export const getPlayers = async () => {
+  return await getMetadata().then((data) => data["players"]);
+};

@@ -7,13 +7,16 @@ import {
   deleteMetadata,
   setMetadataToDefault,
   getMetadata,
+  createMetadataIfNotExists,
+  getPlayers,
 } from "./controller";
 
 OBR.onReady(async () => {
   console.clear();
-  // await setMetadataToDefault();
+  await createMetadataIfNotExists();
+
   console.log(await getMetadata());
-  // await deleteMetadata();
+  console.log(await getPlayers());
 
   ReactDOM.createRoot(document.getElementById("root")).render(<Home />);
 });
