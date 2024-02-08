@@ -50,8 +50,6 @@ const renameRoles = (players) => {
       case "PLAYER":
         player.role = "Player";
         break;
-      default:
-        break;
     }
   });
 };

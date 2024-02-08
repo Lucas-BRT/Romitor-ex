@@ -4,7 +4,6 @@ import Home from "./view/home";
 import OBR from "@owlbear-rodeo/sdk";
 
 import {
-  getMetadata,
   createMetadataIfNotExists,
   addPlayer,
   playerHasBeenAdded,
