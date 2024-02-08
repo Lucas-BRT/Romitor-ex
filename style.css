@@ -13,8 +13,8 @@
 
 header {
   background-color: var(--green);
+  color: white;
   height: 10vh;
-  width: 100%;
   padding: 5px;
   display: flex;
   justify-content: center;
@@ -23,8 +23,17 @@ header {
 }
 
 .main-container {
-  height: 90vh;
   padding: 5px;
+  height: 80vh;
+}
+
+footer {
+  height: 10vh;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--green);
 }
 
 .players_list {
@@ -49,6 +58,8 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 25px;
+  border-radius: 3px;
 }
 
 .master-role {
@@ -57,6 +68,8 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 25px;
+  border-radius: 3px;
 }
 
 .player-role {
@@ -65,4 +78,38 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 25px;
+  border-radius: 3px;
+}
+
+.delete-player {
+  color: rgba(255, 255, 255, 0.562);
+  font-size: 1em;
+  font-weight: bolder;
+  border-radius: 3px;
+  width: 25px;
+  height: 25px;
+  background: none;
+  border: none;
+}
+
+.delete-player:hover {
+  cursor: pointer;
+  color: rgb(255, 30, 30);
+}
+
+.delete-all-players {
+  width: 120px;
+  height: 25px;
+  font-weight: bolder;
+  color: white;
+  background-color: red;
+  border-radius: 30px;
+  border: none;
+}
+
+.delete-all-players:hover {
+  cursor: pointer;
+  color: red;
+  background-color: white;
 }

@@ -8,6 +8,7 @@ import {
   addPlayer,
   playerHasBeenAdded,
   getSelf,
+  getPlayers,
 } from "./controller";
 
 OBR.onReady(async () => {
@@ -20,6 +21,8 @@ OBR.onReady(async () => {
   if (!registered) {
     await addPlayer(self);
   }
+
+  console.log(await getPlayers());
 
   ReactDOM.createRoot(document.getElementById("root")).render(<Home />);
 });

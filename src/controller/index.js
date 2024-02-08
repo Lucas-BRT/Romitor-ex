@@ -21,6 +21,25 @@ export const getAllPlayersData = async () => {
   return players;
 };
 
+const handleTeamSizeChange = async (action = () => {}) => {
+  let onlinePlayers = await getAllPlayersData();
+  let onlinePlayersSize = onlinePlayers.length;
+
+  OBR.party.onChange(async () => {
+    const newOnlinePlayers = await getAllPlayersData();
+    const newOnlinePlayersSize = newOnlinePlayers.length;
+
+    if (onlinePlayersSize !== newOnlinePlayersSize) {
+      changeType =
+        onlinePlayersSize < newOnlinePlayersSize ? "ENTERED" : "EXITED";
+
+      onlinePlayers = newOnlinePlayers;
+      onlinePlayersSize = newOnlinePlayersSize;
+      action(changeType);
+    }
+  });
+};
+
 export const onTeamSizeChange = async (action = () => {}) => {
   let onlinePlayers = await getAllPlayersData();
   let onlinePlayersSize = onlinePlayers.length;
@@ -99,6 +118,7 @@ export const getPlayers = async () => {
 
 export const addPlayer = async (player) => {
   if (player !== undefined) {
+    player["state"] = "online";
     let players = await getPlayers();
     players = [...players, player];
 

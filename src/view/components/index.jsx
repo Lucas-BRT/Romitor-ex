@@ -54,6 +54,7 @@ export const PlayerContainer = (props) => {
     <div id={id} className="player-container">
       <div className="player-name">{name}</div>
       <div className={`${class_role}`}>{role}</div>
+      <button className="delete-player">X</button>
     </div>
   );
 };
