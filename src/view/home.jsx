@@ -4,7 +4,11 @@ import { getAllPlayersData, onTeamSizeChange } from "../controller";
 function Home() {
   return (
     <div>
-      <header> Romitor-ex </header>
+      <header>
+        <a href="https://github.com/Lucas-BRT/Romitor-ex" target="_blank">
+          Romitor-ex
+        </a>
+      </header>
       <div className="main-container">
         <PlayersList
           playersList={getAllPlayersData}

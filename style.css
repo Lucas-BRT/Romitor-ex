@@ -27,6 +27,11 @@ header {
   height: 80vh;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 footer {
   height: 10vh;
   padding: 5px;
@@ -103,7 +108,7 @@ footer {
   height: 25px;
   font-weight: bolder;
   color: white;
-  background-color: red;
+  background-color: rgba(255, 0, 0, 0.699);
   border-radius: 30px;
   border: none;
 }
