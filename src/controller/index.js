@@ -1,8 +1,12 @@
-import { getSelfData } from "../model";
-import { getPlayersData } from "../model";
+import {
+  getSelfData,
+  getPlayersData,
+  METADATA_PATH,
+  setRoomMetadata,
+  DEFAULT_METADATA,
+  getRoomMetadata,
+} from "../model";
 import OBR from "@owlbear-rodeo/sdk";
-
-const NOTIFICATION_DELAY = 500;
 
 export const getAllPlayersData = async () => {
   let players = [];
@@ -53,6 +57,7 @@ const renameRoles = (players) => {
 };
 
 export const notify = async (mensage, changeState) => {
+  const NOTIFICATION_DELAY = 500;
   let notificationId;
 
   switch (changeState) {
@@ -67,4 +72,55 @@ export const notify = async (mensage, changeState) => {
   setTimeout(async () => {
     await OBR.notification.close(notificationId);
   }, NOTIFICATION_DELAY);
+};
+
+export const deleteMetadata = async () => {
+  setRoomMetadata(undefined);
+};
+
+export const getMetadata = async () => {
+  return await getRoomMetadata().then((data) => data[METADATA_PATH]);
+};
+
+export const createMetadataIfNotExists = async () => {
+  let metadata = await getMetadata();
+
+  if (metadata === undefined) {
+    metadata = DEFAULT_METADATA;
+    await OBR.room.setMetadata({ [METADATA_PATH]: metadata });
+  }
+};
+
+export const getSelf = async () => {
+  return await getSelfData();
+};
+
+export const getPlayers = async () => {
+  return await getMetadata().then((data) => data.players);
+};
+
+export const addPlayer = async (player) => {
+  if (player !== undefined) {
+    let players = await getPlayers();
+    players = [...players, player];
+
+    let metadata = await getMetadata();
+    metadata.players = players;
+
+    await setRoomMetadata({ players: players });
+  }
+};
+
+export const playerHasBeenAdded = async (playerId) => {
+  let players = await getPlayers();
+
+  for (let i = 0; i < players.length; i++) {
+    let player = players[i];
+
+    if (player.id == playerId) {
+      return true;
+    }
+  }
+
+  return false;
 };
