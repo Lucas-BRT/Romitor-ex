@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { getAllPlayersData, notify, onTeamSizeChange } from "../../controller";
+import {
+  ajustPopover,
+  getAllPlayersData,
+  notify,
+  onTeamSizeChange,
+} from "../../controller";
 
 export const PlayersList = () => {
   let [players, setPlayers] = useState([]);
@@ -31,6 +36,7 @@ export const PlayersList = () => {
           role={player.role}
           key={player.id}
           id={player.id}
+          status={player.status}
         />
       ))}
     </div>
@@ -38,7 +44,7 @@ export const PlayersList = () => {
 };
 
 export const PlayerContainer = (props) => {
-  const { name, role, id } = props;
+  const { name, role, id, status } = props;
   let class_role;
 
   switch (role) {

@@ -14,7 +14,7 @@
 header {
   background-color: var(--green);
   color: white;
-  height: 10vh;
+  height: 40px;
   padding: 5px;
   display: flex;
   justify-content: center;
@@ -24,7 +24,7 @@ header {
 
 .main-container {
   padding: 5px;
-  height: 80vh;
+  height: 100%;
 }
 
 a {
@@ -33,7 +33,7 @@ a {
 }
 
 footer {
-  height: 10vh;
+  height: 40px;
   padding: 5px;
   display: flex;
   justify-content: center;
@@ -117,4 +117,10 @@ footer {
   cursor: pointer;
   color: red;
   background-color: white;
+}
+
+.home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }

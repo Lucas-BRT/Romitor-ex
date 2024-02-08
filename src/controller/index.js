@@ -55,6 +55,8 @@ export const onTeamSizeChange = async (action = () => {}) => {
 
       onlinePlayers = newOnlinePlayers;
       onlinePlayersSize = newOnlinePlayersSize;
+
+      await ajustPopover(onlinePlayersSize);
       action(onlinePlayers, changeStatus);
     }
   });
@@ -141,4 +143,19 @@ export const playerHasBeenAdded = async (playerId) => {
   }
 
   return false;
+};
+
+export const setMetadataToDefault = async () => {
+  const defaultMetadata = {
+    players: [],
+  };
+  await setRoomMetadata(defaultMetadata);
+};
+
+export const ajustPopover = async (playersAmount = 1) => {
+  const playerSpace = 40;
+  const baseheight = 85;
+
+  const totalheight = playerSpace * playersAmount + baseheight;
+  await OBR.action.setHeight(totalheight);
 };
