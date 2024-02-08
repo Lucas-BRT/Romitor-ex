@@ -79,15 +79,7 @@ export const deleteMetadata = async () => {
 };
 
 export const getMetadata = async () => {
-  let metadata = await getRoomMetadata();
-  return metadata[METADATA_PATH];
-};
-
-export const setMetadataToDefault = async () => {
-  const defaultMetadata = {
-    players: [],
-  };
-  await OBR.room.setMetadata({ [METADATA_PATH]: defaultMetadata });
+  return await getRoomMetadata().then((data) => data[METADATA_PATH]);
 };
 
 export const createMetadataIfNotExists = async () => {
@@ -96,10 +88,39 @@ export const createMetadataIfNotExists = async () => {
   if (metadata === undefined) {
     metadata = DEFAULT_METADATA;
     await OBR.room.setMetadata({ [METADATA_PATH]: metadata });
-    console.log(metadata);
   }
 };
 
+export const getSelf = async () => {
+  return await getSelfData();
+};
+
 export const getPlayers = async () => {
-  return await getMetadata().then((data) => data["players"]);
+  return await getMetadata().then((data) => data.players);
+};
+
+export const addPlayer = async (player) => {
+  if (player !== undefined) {
+    let players = await getPlayers();
+    players = [...players, player];
+
+    let metadata = await getMetadata();
+    metadata.players = players;
+
+    await setRoomMetadata({ players: players });
+  }
+};
+
+export const playerHasBeenAdded = async (playerId) => {
+  let players = await getPlayers();
+
+  for (let i = 0; i < players.length; i++) {
+    let player = players[i];
+
+    if (player.id == playerId) {
+      return true;
+    }
+  }
+
+  return false;
 };

@@ -34,3 +34,10 @@ export const getRoomMetadata = async () => {
 export const setRoomMetadata = async (data) => {
   await OBR.room.setMetadata({ [METADATA_PATH]: data });
 };
+
+export const setMetadataToDefault = async () => {
+  const defaultMetadata = {
+    players: [],
+  };
+  await OBR.room.setMetadata({ [METADATA_PATH]: defaultMetadata });
+};
