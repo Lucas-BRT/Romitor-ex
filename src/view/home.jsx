@@ -1,29 +1,14 @@
-import { PlayersList } from "./components";
-import {
-  getAllPlayersData,
-  onTeamSizeChange,
-  setMetadataToDefault,
-} from "../controller";
+import { PlayersList, Header, Footer } from "./components";
+import * as controller from "../controller";
 
 function Home() {
   return (
     <div className="home">
-      <header>
-        <a href="https://github.com/Lucas-BRT/Romitor-ex" target="_blank">
-          Romitor-ex
-        </a>
-      </header>
+      <Header />
       <div className="main-container">
-        <PlayersList
-          playersList={getAllPlayersData}
-          trigger={onTeamSizeChange}
-        />
+        <PlayersList />
       </div>
-      <footer>
-        <button className="delete-all-players" onClick={setMetadataToDefault}>
-          DELETE DATA
-        </button>
-      </footer>
+      <Footer />
     </div>
   );
 }
