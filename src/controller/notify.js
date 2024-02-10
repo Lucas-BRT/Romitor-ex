@@ -1,6 +1,6 @@
 import OBR from "@owlbear-rodeo/sdk";
 
-const NOTIFICATION_DELAY = 500;
+const NOTIFICATION_DELAY = 1000;
 
 async function notify(mensage, changeState) {
   let notificationId;
