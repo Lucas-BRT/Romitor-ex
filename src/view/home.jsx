@@ -1,16 +1,14 @@
-import { PlayersList } from "./components";
-import { getAllPlayersData, onTeamSizeChange } from "../controller";
+import { PlayersList, Header, Footer } from "./components";
+import * as controller from "../controller";
 
 function Home() {
   return (
-    <div>
-      <header>Romitor-ex</header>
+    <div className="home">
+      <Header />
       <div className="main-container">
-        <PlayersList
-          playersList={getAllPlayersData}
-          trigger={onTeamSizeChange}
-        />
+        <PlayersList />
       </div>
+      <Footer />
     </div>
   );
 }
