@@ -50,6 +50,11 @@ function PlayerContainer(props) {
       break;
   }
 
+  async function deletePlayer() {
+    // TODO: add support to remove a player
+    // await controller.player.deletePlayer(id);
+  }
+
   return (
     <div id={id} className="player-container">
       <div className="online-state-container">
@@ -57,7 +62,9 @@ function PlayerContainer(props) {
       </div>
       <div className="player-name">{name}</div>
       <div className={`${classRole}`}>{role}</div>
-      <button className="delete-player">X</button>
+      <button className="delete-player" onClick={deletePlayer}>
+        X
+      </button>
     </div>
   );
 }
