@@ -71,6 +71,8 @@ async function setState(playerId = "", state = "") {
       player.state = state;
     }
   }
+
+  await model.metadata.set(metadata);
 }
 
 async function findDiffPlayer(change) {

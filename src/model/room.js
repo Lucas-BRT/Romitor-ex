@@ -12,14 +12,14 @@ async function set(data) {
 }
 
 async function purge() {
-  setRoomMetadata(undefined);
+  set(undefined);
 }
 
 async function reset() {
   const defaultMetadata = {
     players: [],
   };
-  await setRoomMetadata(defaultMetadata);
+  await set(defaultMetadata);
 }
 
 export { get, set, purge, reset };

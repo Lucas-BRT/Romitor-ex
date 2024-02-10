@@ -24,8 +24,21 @@ OBR.onReady(async () => {
   }
 
   controller.events.onChange(async (change) => {
+    console.log(change);
     const diffPlayer = await controller.player.findDiffPlayer(change);
+    switch (change.changeType) {
+      case "IN":
+        await controller.player.setState(diffPlayer.id, "online");
+        break;
+      case "OUT":
+        await controller.player.setState(diffPlayer.id, "offline");
+        break;
+      default:
+        break;
+    }
   });
+
+  // controller.resetMetadata();
 
   // const players = await getPlayers();
 
