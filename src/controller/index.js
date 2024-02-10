@@ -15,19 +15,6 @@ async function haveMetadata() {
   return true;
 }
 
-async function renameRoles(players) {
-  players.map((player) => {
-    switch (player.role) {
-      case "GM":
-        player.role = "Master";
-        break;
-      case "PLAYER":
-        player.role = "Player";
-        break;
-    }
-  });
-}
-
 async function ajustPopover(playersAmount = 1) {
   const playerSpace = 40;
   const baseheight = 85;
@@ -40,12 +27,4 @@ async function createMetadata() {
   model.metadata.resetMetadata();
 }
 
-export {
-  events,
-  notify,
-  player,
-  haveMetadata,
-  renameRoles,
-  ajustPopover,
-  createMetadata,
-};
+export { events, notify, player, haveMetadata, ajustPopover, createMetadata };

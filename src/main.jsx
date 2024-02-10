@@ -23,6 +23,8 @@ OBR.onReady(async () => {
     controller.player.setState(localPlayerData.id, "online");
   }
 
+  await controller.events.onChange();
+
   // const players = await getPlayers();
 
   // await onTeamChange(async (change) => {

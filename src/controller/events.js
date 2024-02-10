@@ -1,8 +1,12 @@
-async function onTeamChange(action = () => {}) {
-  let onlinePlayers = await getAllPlayersData();
+import OBR from "@owlbear-rodeo/sdk";
+
+import { player } from ".";
+
+async function onChange(action = () => {}) {
+  let onlinePlayers = await player.getAllPlayersData();
 
   OBR.party.onChange(async () => {
-    const newOnlinePlayers = await getAllPlayersData();
+    const newOnlinePlayers = await player.getAllPlayersData();
 
     if (onlinePlayers.length !== newOnlinePlayers.length) {
       const change = {
@@ -24,26 +28,26 @@ async function onTeamMetadataChange(action = () => {}) {
   });
 }
 
-async function onTeamSizeChange(action = () => {}) {
-  let onlinePlayers = await getAllPlayersData();
-  let onlinePlayersSize = onlinePlayers.length;
-  let changeStatus;
+// async function onTeamSizeChange(action = () => {}) {
+//   let onlinePlayers = await getAllPlayersData();
+//   let onlinePlayersSize = onlinePlayers.length;
+//   let changeStatus;
 
-  OBR.party.onChange(async () => {
-    const newOnlinePlayers = await getAllPlayersData();
-    const newOnlinePlayersSize = newOnlinePlayers.length;
+//   OBR.party.onChange(async () => {
+//     const newOnlinePlayers = await getAllPlayersData();
+//     const newOnlinePlayersSize = newOnlinePlayers.length;
 
-    if (onlinePlayersSize !== newOnlinePlayersSize) {
-      changeStatus =
-        onlinePlayersSize < newOnlinePlayersSize ? "ENTERED" : "EXITED";
+//     if (onlinePlayersSize !== newOnlinePlayersSize) {
+//       changeStatus =
+//         onlinePlayersSize < newOnlinePlayersSize ? "ENTERED" : "EXITED";
 
-      onlinePlayers = newOnlinePlayers;
-      onlinePlayersSize = newOnlinePlayersSize;
+//       onlinePlayers = newOnlinePlayers;
+//       onlinePlayersSize = newOnlinePlayersSize;
 
-      await ajustPopover(onlinePlayersSize);
-      action(onlinePlayers, changeStatus);
-    }
-  });
-}
+//       await ajustPopover(onlinePlayersSize);
+//       action(onlinePlayers, changeStatus);
+//     }
+//   });
+// }
 
-export { onTeamChange, onTeamMetadataChange, onTeamSizeChange };
+export { onChange, onTeamMetadataChange };

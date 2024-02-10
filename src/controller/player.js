@@ -36,11 +36,24 @@ async function areRegisteredInTheRoom(playerId = "") {
   return false;
 }
 
+async function renameRoles(players) {
+  players.map((player) => {
+    switch (player.role) {
+      case "GM":
+        player.role = "Master";
+        break;
+      case "PLAYER":
+        player.role = "Player";
+        break;
+    }
+  });
+}
+
 async function getAllPlayersData() {
   let players = [];
 
-  const selfData = await getSelfData();
-  const otherPlayers = await getPlayersData();
+  const selfData = await getSelf();
+  const otherPlayers = await getPlayers();
 
   players.push(selfData, ...otherPlayers);
 
