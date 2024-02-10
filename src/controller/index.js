@@ -15,7 +15,11 @@ async function haveMetadata() {
 
 async function ajustPopover(playersAmount = 1) {
   const playerSpace = 40;
-  const baseheight = 85;
+  let baseheight = 85;
+  if (playersAmount < 1) {
+    baseheight = 90;
+    playersAmount = 0;
+  }
 
   const totalheight = playerSpace * playersAmount + baseheight;
   await OBR.action.setHeight(totalheight);

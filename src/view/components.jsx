@@ -73,9 +73,16 @@ function Header() {
 }
 
 function Footer() {
+  async function resetMetadata() {
+    await controller.resetMetadata();
+    await controller.ajustPopover(1);
+  }
+
   return (
     <footer>
-      <button className="delete-all-players">DELETE DATA</button>
+      <button className="delete-all-players" onClick={resetMetadata}>
+        DELETE DATA
+      </button>
     </footer>
   );
 }
