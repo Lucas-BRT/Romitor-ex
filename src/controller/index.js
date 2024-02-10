@@ -4,8 +4,6 @@ import * as notify from "./notify";
 import * as player from "./player";
 import * as model from "../model";
 
-const NOTIFICATION_DELAY = 500;
-
 async function haveMetadata() {
   let metadata = await model.metadata.get();
 

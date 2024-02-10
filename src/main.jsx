@@ -27,13 +27,23 @@ OBR.onReady(async () => {
     .getMetadataPlayers()
     .then((players) => players.length);
 
+  let lastChangedPlayer = {};
+
   controller.events.onChange(async (change) => {
     const diffPlayer = await controller.player.findDiffPlayer(change);
     switch (change.changeType) {
       case "IN":
+        lastChangedPlayer = {
+          player: diffPlayer,
+          changeType: change.changeType,
+        };
         await controller.player.setState(diffPlayer.id, "online");
         break;
       case "OUT":
+        lastChangedPlayer = {
+          player: diffPlayer,
+          changeType: change.changeType,
+        };
         await controller.player.setState(diffPlayer.id, "offline");
         break;
       default:
@@ -46,6 +56,10 @@ OBR.onReady(async () => {
     if (newAmountOfPlayers !== amountOfPlayers) {
       await controller.ajustPopover(newAmountOfPlayers);
     }
+    controller.notify.handleNotifications(
+      lastChangedPlayer.player,
+      lastChangedPlayer.changeType,
+    );
   });
 
   ReactDOM.createRoot(document.getElementById("root")).render(<Home />);

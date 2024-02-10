@@ -1,13 +1,15 @@
 import OBR from "@owlbear-rodeo/sdk";
 
+const NOTIFICATION_DELAY = 500;
+
 async function notify(mensage, changeState) {
   let notificationId;
 
   switch (changeState) {
-    case "ENTERED":
+    case "IN":
       notificationId = await OBR.notification.show(mensage, "SUCCESS");
       break;
-    case "EXITED":
+    case "OUT":
       notificationId = await OBR.notification.show(mensage, "ERROR");
       break;
   }
@@ -17,13 +19,13 @@ async function notify(mensage, changeState) {
   }, NOTIFICATION_DELAY);
 }
 
-async function handleNotifications(changeStatus) {
-  switch (changeStatus) {
-    case "ENTERED":
-      await notify("A player has entered the room!", changeStatus);
+async function handleNotifications(playerChanged, typeOfChange) {
+  switch (typeOfChange) {
+    case "IN":
+      await notify(`${playerChanged.name} has entered the room!`, typeOfChange);
       break;
-    case "EXITED":
-      await notify("A player has exited the room!", changeStatus);
+    case "OUT":
+      await notify(`${playerChanged.name} has exited the room!`, typeOfChange);
       break;
   }
 }
