@@ -124,3 +124,31 @@ footer {
   flex-direction: column;
   justify-content: center;
 }
+
+.online-state-container {
+  width: 13%;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.online-status-online {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(1, 255, 1, 0.75);
+}
+
+.online-status-offline {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(202, 24, 24, 0.75);
+}

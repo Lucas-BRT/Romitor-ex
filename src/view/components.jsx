@@ -2,19 +2,24 @@ import { useState, useEffect } from "react";
 import * as controller from "../controller";
 
 function PlayersList() {
-  let [players, setPlayers] = useState([]);
+  let [players, setPlayers] = useState(null);
 
   useEffect(() => {
-    const handlePlayersChanges = async () => {
-      let players = await controller.player.getPlayers();
-      console.log(players);
-      await setPlayers(players);
-    };
+    async function handlePlayersChanges() {
+      const playersOnMetadata = await controller.player.getMetadataPlayers();
+      setPlayers(playersOnMetadata);
 
-    return () => {
-      handlePlayersChanges();
-    };
+      await controller.events.onMetadataChange(async () => {
+        await setPlayers(await controller.player.getMetadataPlayers());
+      });
+    }
+
+    handlePlayersChanges();
   }, []);
+
+  if (!players) {
+    return <div>loading...</div>;
+  }
 
   return (
     <div className="players_list">
@@ -33,26 +38,25 @@ function PlayersList() {
 
 function PlayerContainer(props) {
   const { name, role, id, state } = props;
-  console.log(props);
   let classRole;
   let onlineState = state;
 
   switch (role) {
-    case "Master":
+    case "GM":
       classRole = "master-role";
       break;
-    case "Player":
+    case "PLAYER":
       classRole = "player-role";
       break;
   }
 
-  console.log(onlineState);
-
   return (
     <div id={id} className="player-container">
+      <div className="online-state-container">
+        <div className={`online-status-${state}`}> </div>
+      </div>
       <div className="player-name">{name}</div>
       <div className={`${classRole}`}>{role}</div>
-      <div className={`${onlineState}`}></div>
       <button className="delete-player">X</button>
     </div>
   );

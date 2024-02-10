@@ -23,8 +23,11 @@ OBR.onReady(async () => {
     controller.player.setState(localPlayerData.id, "online");
   }
 
+  let amountOfPlayers = controller.player
+    .getMetadataPlayers()
+    .then((players) => players.length);
+
   controller.events.onChange(async (change) => {
-    console.log(change);
     const diffPlayer = await controller.player.findDiffPlayer(change);
     switch (change.changeType) {
       case "IN":
@@ -38,24 +41,12 @@ OBR.onReady(async () => {
     }
   });
 
-  // controller.resetMetadata();
-
-  // const players = await getPlayers();
-
-  // await onTeamChange(async (change) => {
-  //   // console.log(change.newOnlinePlayers);
-
-  //   console.log(await getPlayers());
-
-  //   // ajustPopover(newPlayers.length);
-  //   // handleNotifications();
-  // });
-
-  // // await ajustPopover(players.length);
-  // // await handleNotifications();
-
-  // onTeamMetadataChange(() => {});
-  // // console.log(players);
+  controller.events.onMetadataChange(async (change) => {
+    const newAmountOfPlayers = change.players.length;
+    if (newAmountOfPlayers !== amountOfPlayers) {
+      await controller.ajustPopover(newAmountOfPlayers);
+    }
+  });
 
   ReactDOM.createRoot(document.getElementById("root")).render(<Home />);
 });

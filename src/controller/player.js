@@ -22,6 +22,10 @@ async function register() {
   }
 }
 
+async function getMetadataPlayers() {
+  return await model.metadata.get().then((data) => data.players);
+}
+
 async function areRegisteredInTheRoom(playerId = "") {
   let players = await model.metadata.get().then((response) => response.players);
 
@@ -49,7 +53,7 @@ async function renameRoles(players) {
   });
 }
 
-async function getLocalPlayers() {
+async function getAllLocalPlayers() {
   let players = [];
 
   const selfData = await getSelf();
@@ -107,8 +111,9 @@ export {
   getSelf,
   getPlayers,
   register,
+  getMetadataPlayers,
   areRegisteredInTheRoom,
-  getLocalPlayers,
+  getAllLocalPlayers,
   setState,
   findDiffPlayer,
 };
