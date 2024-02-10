@@ -2,19 +2,20 @@ import OBR from "@owlbear-rodeo/sdk";
 import * as events from "./events";
 import * as notify from "./notify";
 import * as player from "./player";
+import * as model from "../model";
 
 const NOTIFICATION_DELAY = 500;
 
-const haveMetadata = async () => {
-  let metadata = await getMetadata();
+async function haveMetadata() {
+  let metadata = await model.metadata.get();
 
   if (metadata === undefined) {
     return false;
   }
   return true;
-};
+}
 
-const renameRoles = (players) => {
+async function renameRoles(players) {
   players.map((player) => {
     switch (player.role) {
       case "GM":
@@ -25,14 +26,26 @@ const renameRoles = (players) => {
         break;
     }
   });
-};
+}
 
-const ajustPopover = async (playersAmount = 1) => {
+async function ajustPopover(playersAmount = 1) {
   const playerSpace = 40;
   const baseheight = 85;
 
   const totalheight = playerSpace * playersAmount + baseheight;
   await OBR.action.setHeight(totalheight);
-};
+}
 
-export { events, notify, player, haveMetadata, renameRoles, ajustPopover };
+async function createMetadata() {
+  model.metadata.resetMetadata();
+}
+
+export {
+  events,
+  notify,
+  player,
+  haveMetadata,
+  renameRoles,
+  ajustPopover,
+  createMetadata,
+};

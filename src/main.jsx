@@ -7,14 +7,21 @@ import * as controller from "./controller";
 OBR.onReady(async () => {
   console.clear();
 
-  // await createMetadataIfNotExists();
-  // const self = await getSelf();
-  // const registered = await playerHasBeenAdded(self.id);
-  // if (!registered) {
-  //   await addPlayer(self);
-  // } else {
-  //   // TODO: handle automatically turn on the online state in the room metadata
-  // }
+  const metadataHasBeenCreated = await controller.haveMetadata();
+  if (!metadataHasBeenCreated) {
+    await controller.createMetadata();
+  }
+
+  const localPlayerData = await controller.player.getSelf();
+  const registered = await controller.player.areRegisteredInTheRoom(
+    localPlayerData.id,
+  );
+
+  if (!registered) {
+    controller.player.register();
+  } else {
+    controller.player.setState(localPlayerData.id, "online");
+  }
 
   // const players = await getPlayers();
 

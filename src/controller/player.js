@@ -1,27 +1,28 @@
 import * as model from "../model";
 
 async function getSelf() {
-  return await getSelfData();
+  return await model.localdata.getSelfData();
 }
 
 async function getPlayers() {
-  return await model.metadata.getMetadata().then((data) => data.players);
+  return await model.metadata.get().then((data) => data.players);
 }
 
-async function addPlayer(player) {
+async function register() {
+  const player = await getSelf();
   if (player !== undefined) {
     player["state"] = "online";
     let players = await getPlayers();
     players = [...players, player];
 
-    let metadata = await getMetadata();
+    let metadata = await model.metadata.get();
     metadata.players = players;
 
-    await setRoomMetadata({ players: players });
+    await model.metadata.set({ players: players });
   }
 }
 
-async function playerHasBeenAdded(playerId) {
+async function areRegisteredInTheRoom(playerId = "") {
   let players = await getPlayers();
 
   for (let i = 0; i < players.length; i++) {
@@ -48,10 +49,22 @@ async function getAllPlayersData() {
   return players;
 }
 
+async function setState(playerId = "", state = "") {
+  let metadata = await model.metadata.get();
+
+  for (let i = 0; i < metadata.players.length; i++) {
+    let player = metadata.players[i];
+    if (player.id == playerId) {
+      player.state = state;
+    }
+  }
+}
+
 export {
   getSelf,
   getPlayers,
-  addPlayer,
-  playerHasBeenAdded,
+  register,
+  areRegisteredInTheRoom,
   getAllPlayersData,
+  setState,
 };
