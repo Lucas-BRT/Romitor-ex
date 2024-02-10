@@ -1,26 +1,34 @@
 import OBR from "@owlbear-rodeo/sdk";
-
 import { player } from ".";
 
 async function onChange(action = () => {}) {
-  let onlinePlayers = await player.getAllPlayersData();
+  let onlinePlayers = await player.getLocalPlayers();
+  let change = {};
 
   OBR.party.onChange(async () => {
-    const newOnlinePlayers = await player.getAllPlayersData();
+    const newOnlinePlayers = await player.getLocalPlayers();
 
     if (onlinePlayers.length !== newOnlinePlayers.length) {
-      const change = {
+      change = {
         onlinePlayers: onlinePlayers,
         newOnlinePlayers: newOnlinePlayers,
       };
 
+      if (onlinePlayers.length < newOnlinePlayers.length) {
+        change.changeType = "IN";
+      } else {
+        change.changeType = "OUT";
+      }
+
       action(change);
       onlinePlayers = newOnlinePlayers;
+    } else {
+      // TODO: handle changes on the players data structure, like renaeming, etc.
     }
   });
 }
 
-async function onTeamMetadataChange(action = () => {}) {
+async function onMetadataChange(action = () => {}) {
   let metadata = await getMetadata();
 
   OBR.room.onMetadataChange((change) => {
@@ -28,26 +36,4 @@ async function onTeamMetadataChange(action = () => {}) {
   });
 }
 
-// async function onTeamSizeChange(action = () => {}) {
-//   let onlinePlayers = await getAllPlayersData();
-//   let onlinePlayersSize = onlinePlayers.length;
-//   let changeStatus;
-
-//   OBR.party.onChange(async () => {
-//     const newOnlinePlayers = await getAllPlayersData();
-//     const newOnlinePlayersSize = newOnlinePlayers.length;
-
-//     if (onlinePlayersSize !== newOnlinePlayersSize) {
-//       changeStatus =
-//         onlinePlayersSize < newOnlinePlayersSize ? "ENTERED" : "EXITED";
-
-//       onlinePlayers = newOnlinePlayers;
-//       onlinePlayersSize = newOnlinePlayersSize;
-
-//       await ajustPopover(onlinePlayersSize);
-//       action(onlinePlayers, changeStatus);
-//     }
-//   });
-// }
-
-export { onChange, onTeamMetadataChange };
+export { onChange, onMetadataChange };

@@ -1,18 +1,18 @@
 import * as model from "../model";
 
 async function getSelf() {
-  return await model.localdata.getSelfData();
+  return await model.localdata.getSelf();
 }
 
 async function getPlayers() {
-  return await model.metadata.get().then((data) => data.players);
+  return await model.localdata.getPlayers().then((data) => data.players);
 }
 
 async function register() {
   const player = await getSelf();
   if (player !== undefined) {
     player["state"] = "online";
-    let players = await getPlayers();
+    let players = await model.metadata.get().then((data) => data.players);
     players = [...players, player];
 
     let metadata = await model.metadata.get();
@@ -23,7 +23,7 @@ async function register() {
 }
 
 async function areRegisteredInTheRoom(playerId = "") {
-  let players = await getPlayers();
+  let players = await model.metadata.get().then((response) => response.players);
 
   for (let i = 0; i < players.length; i++) {
     let player = players[i];
@@ -49,11 +49,11 @@ async function renameRoles(players) {
   });
 }
 
-async function getAllPlayersData() {
+async function getLocalPlayers() {
   let players = [];
 
   const selfData = await getSelf();
-  const otherPlayers = await getPlayers();
+  const otherPlayers = await model.localdata.getPlayers();
 
   players.push(selfData, ...otherPlayers);
 
@@ -73,11 +73,40 @@ async function setState(playerId = "", state = "") {
   }
 }
 
+async function findDiffPlayer(change) {
+  let shortList = [];
+  let longList = [];
+  switch (change.changeType) {
+    case "IN":
+      shortList = change.onlinePlayers;
+      longList = change.newOnlinePlayers;
+      break;
+    case "OUT":
+      shortList = change.newOnlinePlayers;
+      longList = change.onlinePlayers;
+      break;
+  }
+
+  for (let i = 0; i < longList.length; i++) {
+    let foundInShortList = false;
+    for (let j = 0; j < shortList.length; j++) {
+      if (longList[i].id == shortList[j].id) {
+        foundInShortList = true;
+        break;
+      }
+    }
+    if (!foundInShortList) {
+      return longList[i];
+    }
+  }
+}
+
 export {
   getSelf,
   getPlayers,
   register,
   areRegisteredInTheRoom,
-  getAllPlayersData,
+  getLocalPlayers,
   setState,
+  findDiffPlayer,
 };

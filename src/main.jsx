@@ -23,7 +23,9 @@ OBR.onReady(async () => {
     controller.player.setState(localPlayerData.id, "online");
   }
 
-  await controller.events.onChange();
+  controller.events.onChange(async (change) => {
+    const diffPlayer = await controller.player.findDiffPlayer(change);
+  });
 
   // const players = await getPlayers();
 

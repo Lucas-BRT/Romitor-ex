@@ -1,6 +1,6 @@
 import OBR from "@owlbear-rodeo/sdk";
 
-async function getSelfData() {
+async function getSelf() {
   const selfData = {
     name: await OBR.player.getName(),
     role: await OBR.player.getRole(),
@@ -9,7 +9,7 @@ async function getSelfData() {
   return selfData;
 }
 
-async function getPlayersData() {
+async function getPlayers() {
   const playersData = (await OBR.party.getPlayers()).map((player) => {
     const playerData = {
       name: player.name,
@@ -21,4 +21,4 @@ async function getPlayersData() {
   return playersData;
 }
 
-export { getSelfData, getPlayersData };
+export { getSelf, getPlayers };
