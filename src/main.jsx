@@ -23,9 +23,11 @@ OBR.onReady(async () => {
     controller.player.setState(localPlayerData.id, "online");
   }
 
-  let amountOfPlayers = controller.player
+  let amountOfPlayers = await controller.player
     .getMetadataPlayers()
     .then((players) => players.length);
+
+  await controller.ajustPopover(amountOfPlayers);
 
   let lastChangedPlayer = {};
 
