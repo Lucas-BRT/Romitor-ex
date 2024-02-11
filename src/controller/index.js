@@ -26,7 +26,7 @@ async function ajustPopover(playersAmount = 1) {
 }
 
 async function createMetadata() {
-  await model.metadata.resetMetadata();
+  await model.metadata.reset();
 }
 
 async function resetMetadata() {
