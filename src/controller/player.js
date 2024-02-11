@@ -109,16 +109,17 @@ async function findDiffPlayer(change) {
 
 async function deletePlayer(playerId) {
   let metadata = await model.metadata.get();
-  // console.log(playerId);
+  let playerList = [];
 
   for (let i = 0; i < metadata.players.length; i++) {
-    if (metadata.players[i].id == playerId) {
-      metadata.players[i] = undefined;
+    if (metadata.players[i].id !== playerId) {
+      playerList.push(metadata.players[i]);
     }
   }
 
-  // awaitmodel.metadata.set(metadata)
-  // console.log(metadata);
+  metadata.players = playerList;
+
+  await model.metadata.set(metadata);
 }
 
 export {

@@ -39,7 +39,6 @@ function PlayersList() {
 function PlayerContainer(props) {
   const { name, role, id, state } = props;
   let classRole;
-  let onlineState = state;
 
   switch (role) {
     case "GM":
@@ -51,8 +50,7 @@ function PlayerContainer(props) {
   }
 
   async function deletePlayer() {
-    // TODO: add support to remove a player
-    // await controller.player.deletePlayer(id);
+    await controller.player.deletePlayer(id);
   }
 
   return (
