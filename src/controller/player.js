@@ -40,7 +40,7 @@ async function areRegisteredInTheRoom(playerId = "") {
   return false;
 }
 
-async function renameRoles(players) {
+function renameRoles(players) {
   players.map((player) => {
     switch (player.role) {
       case "GM":
@@ -66,6 +66,38 @@ async function getAllLocalPlayers() {
   return players;
 }
 
+async function setName(playerId = "", name = "") {
+  let metadata = await model.metadata.get();
+
+  for (let i = 0; i < metadata.players.length; i++) {
+    let player = metadata.players[i];
+    if (player.id == playerId) {
+      player.name = name;
+    }
+  }
+
+  await model.metadata.set(metadata);
+}
+
+async function setRole(playerId = "", role = "") {
+  let metadata = await model.metadata.get();
+
+  if (role === "Master") {
+    role = "GM";
+  } else {
+    role = "PLAYER";
+  }
+
+  for (let i = 0; i < metadata.players.length; i++) {
+    let player = metadata.players[i];
+    if (player.id == playerId) {
+      player.role = role;
+    }
+  }
+
+  await model.metadata.set(metadata);
+}
+
 async function setState(playerId = "", state = "") {
   let metadata = await model.metadata.get();
 
@@ -79,7 +111,7 @@ async function setState(playerId = "", state = "") {
   await model.metadata.set(metadata);
 }
 
-async function findDiffPlayer(change) {
+function findDiffPlayer(change) {
   let shortList = [];
   let longList = [];
   switch (change.changeType) {
@@ -128,7 +160,10 @@ export {
   register,
   getMetadataPlayers,
   areRegisteredInTheRoom,
+  renameRoles,
   getAllLocalPlayers,
+  setName,
+  setRole,
   setState,
   findDiffPlayer,
   deletePlayer,

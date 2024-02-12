@@ -3,29 +3,41 @@ import { player } from ".";
 import * as model from "../model";
 
 async function onChange(action = () => {}) {
-  let onlinePlayers = await player.getAllLocalPlayers();
   let change = {};
+  change.onlinePlayers = await player.getAllLocalPlayers();
 
-  OBR.party.onChange(async () => {
-    const newOnlinePlayers = await player.getAllLocalPlayers();
+  OBR.party.onChange(async (obrChange) => {
+    change.newOnlinePlayers = await player.getAllLocalPlayers();
 
-    if (onlinePlayers.length !== newOnlinePlayers.length) {
-      change = {
-        onlinePlayers: onlinePlayers,
-        newOnlinePlayers: newOnlinePlayers,
-      };
-
-      if (onlinePlayers.length < newOnlinePlayers.length) {
+    if (change.onlinePlayers.length !== change.newOnlinePlayers.length) {
+      if (change.onlinePlayers.length < change.newOnlinePlayers.length) {
         change.changeType = "IN";
       } else {
         change.changeType = "OUT";
       }
+      change.diffPlayer = player.findDiffPlayer(change);
 
       action(change);
-      onlinePlayers = newOnlinePlayers;
     } else {
-      // TODO: handle changes on the players data structure, like renaeming, etc.
+      player.renameRoles(obrChange);
+      for (let i = 0; i < obrChange.length; i++) {
+        for (let j = 0; j < change.onlinePlayers.length; j++) {
+          if (obrChange[i].id === change.onlinePlayers[j].id) {
+            if (obrChange[i].role !== change.onlinePlayers[j].role) {
+              change.diffPlayer = obrChange[i];
+              change.changeType = "CHANGE-ROLE";
+              action(change);
+            }
+            if (obrChange[i].name !== change.onlinePlayers[j].name) {
+              change.diffPlayer = obrChange[i];
+              change.changeType = "RENAME";
+              action(change);
+            }
+          }
+        }
+      }
     }
+    change.onlinePlayers = change.newOnlinePlayers;
   });
 }
 

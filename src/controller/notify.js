@@ -14,9 +14,11 @@ async function notify(mensage, changeState) {
       break;
   }
 
-  setTimeout(async () => {
-    await OBR.notification.close(notificationId);
-  }, NOTIFICATION_DELAY);
+  if (notificationId !== undefined) {
+    setTimeout(async () => {
+      await OBR.notification.close(notificationId);
+    }, NOTIFICATION_DELAY);
+  }
 }
 
 async function handleNotifications(playerChanged, typeOfChange) {
