@@ -24,10 +24,12 @@ async function onChange(action = () => {}) {
         for (let j = 0; j < change.onlinePlayers.length; j++) {
           if (obrChange[i].id === change.onlinePlayers[j].id) {
             if (obrChange[i].role !== change.onlinePlayers[j].role) {
+              change.diffPlayer = obrChange[i];
               change.changeType = "CHANGE-ROLE";
               action(change);
             }
             if (obrChange[i].name !== change.onlinePlayers[j].name) {
+              change.diffPlayer = obrChange[i];
               change.changeType = "RENAME";
               action(change);
             }

@@ -32,7 +32,6 @@ OBR.onReady(async () => {
   let lastChangedPlayer = {};
 
   controller.events.onChange(async (change) => {
-    console.log(change);
     switch (change.changeType) {
       case "IN":
         lastChangedPlayer = {
@@ -49,8 +48,16 @@ OBR.onReady(async () => {
         await controller.player.setState(change.diffPlayer.id, "offline");
         break;
       case "CHANGE-ROLE":
+        await controller.player.setRole(
+          change.diffPlayer.id,
+          change.diffPlayer.role,
+        );
         break;
       case "RENAME":
+        await controller.player.setName(
+          change.diffPlayer.id,
+          change.diffPlayer.name,
+        );
         break;
       default:
         break;
