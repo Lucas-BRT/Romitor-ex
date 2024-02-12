@@ -4,17 +4,15 @@ import * as model from "../model";
 
 async function onChange(action = () => {}) {
   let onlinePlayers = await player.getAllLocalPlayers();
-  let change = {};
+  let change = {
+    onlinePlayers: onlinePlayers,
+  };
 
-  OBR.party.onChange(async () => {
+  OBR.party.onChange(async (obrChange) => {
     const newOnlinePlayers = await player.getAllLocalPlayers();
+    change.newOnlinePlayers = newOnlinePlayers;
 
     if (onlinePlayers.length !== newOnlinePlayers.length) {
-      change = {
-        onlinePlayers: onlinePlayers,
-        newOnlinePlayers: newOnlinePlayers,
-      };
-
       if (onlinePlayers.length < newOnlinePlayers.length) {
         change.changeType = "IN";
       } else {
@@ -22,10 +20,24 @@ async function onChange(action = () => {}) {
       }
 
       action(change);
-      onlinePlayers = newOnlinePlayers;
     } else {
       // TODO: handle changes on the players data structure, like renaeming, etc.
+      player.renameRoles(obrChange);
+
+      for (let i = 0; i < obrChange.length; i++) {
+        for (let j = 0; j < onlinePlayers.length; j++) {
+          if (obrChange[i].id === onlinePlayers[j].id) {
+            if (obrChange[i].role !== onlinePlayers[j].role) {
+              change.changeType = "CHANGE-ROLE";
+            }
+            if (obrChange[i].name !== onlinePlayers[j].name) {
+              change.changeType = "RENAME";
+            }
+          }
+        }
+      }
     }
+    onlinePlayers = newOnlinePlayers;
   });
 }
 

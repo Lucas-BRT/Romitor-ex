@@ -128,6 +128,7 @@ export {
   register,
   getMetadataPlayers,
   areRegisteredInTheRoom,
+  renameRoles,
   getAllLocalPlayers,
   setState,
   findDiffPlayer,
