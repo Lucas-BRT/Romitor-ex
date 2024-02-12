@@ -48,12 +48,20 @@ OBR.onReady(async () => {
         await controller.player.setState(change.diffPlayer.id, "offline");
         break;
       case "CHANGE-ROLE":
+        lastChangedPlayer = {
+          player: change.diffPlayer,
+          changeType: change.changeType,
+        };
         await controller.player.setRole(
           change.diffPlayer.id,
           change.diffPlayer.role,
         );
         break;
       case "RENAME":
+        lastChangedPlayer = {
+          player: change.diffPlayer,
+          changeType: change.changeType,
+        };
         await controller.player.setName(
           change.diffPlayer.id,
           change.diffPlayer.name,
@@ -66,9 +74,11 @@ OBR.onReady(async () => {
 
   controller.events.onMetadataChange(async (change) => {
     const newAmountOfPlayers = change.players.length;
+
     if (newAmountOfPlayers !== amountOfPlayers) {
       await controller.ajustPopover(newAmountOfPlayers);
     }
+
     controller.notify.handleNotifications(
       lastChangedPlayer.player,
       lastChangedPlayer.changeType,
