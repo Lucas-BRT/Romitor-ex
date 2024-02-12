@@ -32,21 +32,25 @@ OBR.onReady(async () => {
   let lastChangedPlayer = {};
 
   controller.events.onChange(async (change) => {
-    const diffPlayer = await controller.player.findDiffPlayer(change);
+    console.log(change);
     switch (change.changeType) {
       case "IN":
         lastChangedPlayer = {
-          player: diffPlayer,
+          player: change.diffPlayer,
           changeType: change.changeType,
         };
-        await controller.player.setState(diffPlayer.id, "online");
+        await controller.player.setState(change.diffPlayer.id, "online");
         break;
       case "OUT":
         lastChangedPlayer = {
-          player: diffPlayer,
+          player: change.diffPlayer,
           changeType: change.changeType,
         };
-        await controller.player.setState(diffPlayer.id, "offline");
+        await controller.player.setState(change.diffPlayer.id, "offline");
+        break;
+      case "CHANGE-ROLE":
+        break;
+      case "RENAME":
         break;
       default:
         break;

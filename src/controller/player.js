@@ -66,6 +66,10 @@ async function getAllLocalPlayers() {
   return players;
 }
 
+async function setName(playerId = "", name = "") {}
+
+async function setRole(playerId = "", role = "") {}
+
 async function setState(playerId = "", state = "") {
   let metadata = await model.metadata.get();
 
@@ -79,7 +83,7 @@ async function setState(playerId = "", state = "") {
   await model.metadata.set(metadata);
 }
 
-async function findDiffPlayer(change) {
+function findDiffPlayer(change) {
   let shortList = [];
   let longList = [];
   switch (change.changeType) {
