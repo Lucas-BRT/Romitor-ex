@@ -19,18 +19,20 @@ async function onChange(action = () => {}) {
 
       action(change);
     } else {
-      player.renameRoles(obrChange);
-      for (let i = 0; i < obrChange.length; i++) {
-        for (let j = 0; j < change.onlinePlayers.length; j++) {
-          if (obrChange[i].id === change.onlinePlayers[j].id) {
-            if (obrChange[i].role !== change.onlinePlayers[j].role) {
-              change.diffPlayer = obrChange[i];
-              change.changeType = "CHANGE-ROLE";
+      for (let i = 0; i < change.onlinePlayers.length; i++) {
+        const player = change.onlinePlayers[i];
+
+        for (let j = 0; j < change.newOnlinePlayers.length; j++) {
+          const newPlayer = change.newOnlinePlayers[j];
+          if (player.id == newPlayer.id) {
+            if (player.name !== newPlayer.name) {
+              change.changeType = "RENAME";
+              change.diffPlayer = newPlayer;
               action(change);
             }
-            if (obrChange[i].name !== change.onlinePlayers[j].name) {
-              change.diffPlayer = obrChange[i];
-              change.changeType = "RENAME";
+            if (player.role !== newPlayer.role) {
+              change.changeType = "CHANGE-ROLE";
+              change.diffPlayer = newPlayer;
               action(change);
             }
           }
