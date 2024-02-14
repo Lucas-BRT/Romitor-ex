@@ -44,8 +44,29 @@ async function onChange(action = () => {}) {
 }
 
 async function onMetadataChange(action = () => {}) {
+  let metadata = await model.metadata.get();
   OBR.room.onMetadataChange((change) => {
-    action(change[model.METADATA_PATH]);
+    const newMetadata = change[model.METADATA_PATH];
+
+    if (metadata.players.length !== newMetadata.players.length) {
+      metadata = newMetadata;
+      action(change[model.METADATA_PATH]);
+    } else {
+      for (let i = 0; i < newMetadata.players.length; i++) {
+        if (metadata.players[i].name !== newMetadata.players[i].name) {
+          metadata = newMetadata;
+          action(change[model.METADATA_PATH]);
+        }
+        if (metadata.players[i].role !== newMetadata.players[i].role) {
+          metadata = newMetadata;
+          action(change[model.METADATA_PATH]);
+        }
+        if (metadata.players[i].state !== newMetadata.players[i].state) {
+          metadata = newMetadata;
+          action(change[model.METADATA_PATH]);
+        }
+      }
+    }
   });
 }
 
