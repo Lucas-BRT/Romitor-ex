@@ -4,8 +4,8 @@ import * as model from "../model";
 
 async function onChange(action = () => { }) {
   let change = {
-    onlinePlayers: null,
-    newOnlinePlayers: null,
+    onlinePlayers: [],
+    newOnlinePlayers: [],
   };
   change.onlinePlayers = await player.getAllLocalPlayers();
 
@@ -22,11 +22,8 @@ async function onChange(action = () => { }) {
 
       action(change);
     } else {
-      for (let i = 0; i < change.onlinePlayers.length; i++) {
-        const player = change.onlinePlayers[i];
-
-        for (let j = 0; j < change.newOnlinePlayers.length; j++) {
-          const newPlayer = change.newOnlinePlayers[j];
+      change.onlinePlayers.forEach((player) => {
+        change.newOnlinePlayers.forEach((newPlayer) => {
           if (player.id == newPlayer.id) {
             if (player.name !== newPlayer.name) {
               change.changeType = "RENAME";
@@ -39,8 +36,8 @@ async function onChange(action = () => { }) {
               action(change);
             }
           }
-        }
-      }
+        })
+      })
     }
     change.onlinePlayers = change.newOnlinePlayers;
   });
