@@ -5,9 +5,9 @@ import OBR from "@owlbear-rodeo/sdk";
 import * as controller from "./controller";
 
 OBR.onReady(async () => {
-  console.clear();
 
   const metadataHasBeenCreated = await controller.haveMetadata();
+
   if (!metadataHasBeenCreated) {
     await controller.createMetadata();
   }
@@ -19,9 +19,9 @@ OBR.onReady(async () => {
 
   if (!registered) {
     controller.player.register();
-  } else {
-    controller.player.setState(localPlayerData.id, "online");
   }
+
+  controller.player.setState(localPlayerData.id, "online");
 
   let amountOfPlayers = await controller.player
     .getMetadataPlayers()
@@ -66,8 +66,6 @@ OBR.onReady(async () => {
           change.diffPlayer.id,
           change.diffPlayer.name,
         );
-        break;
-      default:
         break;
     }
   });
