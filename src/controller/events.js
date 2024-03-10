@@ -2,11 +2,14 @@ import OBR from "@owlbear-rodeo/sdk";
 import { player } from ".";
 import * as model from "../model";
 
-async function onChange(action = () => {}) {
-  let change = {};
+async function onChange(action = () => { }) {
+  let change = {
+    onlinePlayers: null,
+    newOnlinePlayers: null,
+  };
   change.onlinePlayers = await player.getAllLocalPlayers();
 
-  OBR.party.onChange(async (obrChange) => {
+  OBR.party.onChange(async () => {
     change.newOnlinePlayers = await player.getAllLocalPlayers();
 
     if (change.onlinePlayers.length !== change.newOnlinePlayers.length) {
@@ -43,7 +46,7 @@ async function onChange(action = () => {}) {
   });
 }
 
-async function onMetadataChange(action = () => {}) {
+async function onMetadataChange(action = () => { }) {
   let metadata = await model.metadata.get();
   OBR.room.onMetadataChange((change) => {
     const newMetadata = change[model.METADATA_PATH];
